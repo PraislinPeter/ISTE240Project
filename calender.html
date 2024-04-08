@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .badge {
+            display: inline-block;
+            width: auto;
+            padding: 0.25em 0.6em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.35em;
+        }
+        .badge-success { background-color: #4CAF50; }
+        .badge-pending { background-color: #FFC107; }
+        .badge-in-progress { background-color: #17a2b8; }
+        .btn-status {
+            color: #495057;
+            background-color: #e9ecef;
+            border-color: #e9ecef;
+        }
+        .status-select {
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+        cursor: pointer;
+    }
+    .status-select:focus {
+        outline: none;
+        box-shadow: none;
+    }
+    .text-success {
+    color: #28a745; /* Bootstrap's .text-success color */
+}
+
+    </style>
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Recent Payment</h2>
+        <table class="table">
+            <thead>
+                <tr class="table-active">
+                    <th scope="col">Patient</th>
+                    <th scope="col">Appointment</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Repeat this block for each row -->
+                <tr>
+                    <td>
+                        <img src="avatar.png" alt="Avatar" class="rounded-circle" width="50" height="50">
+                        Mr. Scott McTomnay<br>
+                        #DOC8231
+                    </td>
+                    <td>Diabetes Control Appointment</td>
+                    <td>Dec 14, 2021</td>
+                    <td>$891</td>
+                    <td>
+                        <td>
+                            <select class="form-control status-select" onchange="updateStatus(this)">
+                                <option value="success" class="text-success" >Success</option>
+                                <option value="pending" selected>Pending</option>
+                                <option value="in-progress">In Progress</option>
+                            </select>
+                        </td>
+                        
+                    </td>
+                    <td>
+                        <button class="btn btn-light btn-sm"><i class="fas fa-sync"></i></button>
+                        <button class="btn btn-light btn-sm"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <!-- ... other rows ... -->
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+</html>

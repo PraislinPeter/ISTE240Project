@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment List</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div id="appointmentList"></div>
+    </div>
+
+    <script>
+        let appointments = [
+            { id: 1, date: '2024-04-01', time: '10:00', status: 'Pending' },
+            { id: 2, date: '2024-04-02', time: '11:00', status: 'Pending' },
+            { id: 3, date: '2024-04-01', time: '10:00', status: 'Pending' },
+            { id: 4, date: '2024-04-01', time: '10:00', status: 'Pending' },
+            { id: 5, date: '2024-04-01', time: '10:00', status: 'Pending' },
+            { id: 6, date: '2024-04-01', time: '10:00', status: 'Pending' }
+        ];
+
+        function displayAppointments() {
+            const listElement = document.getElementById('appointmentList');
+            listElement.innerHTML = ''; // Clear the list before repopulating
+
+            const table = document.createElement('table');
+            table.classList.add('table'); // Bootstrap class for tables
+
+            table.innerHTML = `
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                        <th scope="col">Prescription</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            `;
+
+            const tbody = table.querySelector('tbody');
+
+            appointments.forEach(appointment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${appointment.date}</td>
+                    <td>${appointment.time}</td>
+                    <td><span class="status">${appointment.status}</span></td>
+                    <td>
+                        <button class="btn btn-success acceptBtn" data-id="${appointment.id}">Accept</button>
+                        <button class="btn btn-danger rejectBtn" data-id="${appointment.id}">Reject</button>
+                    </td>
+                    <td><a href="index.html">+ Add</a></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            listElement.appendChild(table);
+
+            attachEventListeners();
+        }
+
+        function updateUI(id, newStatus) {
+            const appointmentElements = document.querySelectorAll('#appointmentList tr');
+            appointmentElements.forEach(element => {
+                const button = element.querySelector(`button[data-id="${id}"]`);
+                if (button) {
+                    const statusElement = element.querySelector('.status');
+                    statusElement.textContent = newStatus;
+                }
+            });
+        }
+
+        function acceptAppointment(id) {
+            updateUI(id, 'Accepted');
+        }
+
+        function rejectAppointment(id) {
+            updateUI(id, 'Rejected');
+        }
+
+        function attachEventListeners() {
+            const acceptButtons = document.querySelectorAll('.acceptBtn');
+            const rejectButtons = document.querySelectorAll('.rejectBtn');
+
+            acceptButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    acceptAppointment(id);
+                });
+            });
+
+            rejectButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    rejectAppointment(id);
+                });
+            });
+        }
+
+        // Initial display of appointments
+        displayAppointments();
+    </script>
+</body>
+</html>
+

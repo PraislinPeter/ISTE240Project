@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor's Dashboard</title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<!-- Custom styles -->
+<style>
+    body{
+        background-color: #E9F4FF;
+    }
+    .dashboard-container {
+        background-color: #E9F4FF;
+        padding: 20px;
+    }
+    .welcome-message {
+        background-color: #0056b3;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        
+        
+    }
+    .activity-panel {
+        background-color: white;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .activity-panel .icon {
+        font-size: 2rem; /* Example icon size */
+    }
+    img {
+            width: 50%;
+            border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            
+        }
+        
+
+
+
+
+
+     
+    
+</style>
+</head>
+<body>
+<div class="container-fluid dashboard-container">
+    <!-- Welcome message -->
+    
+        <!-- Welcome message and image container -->
+        <div class="row align-items-center welcome-message">
+            <!-- Image Column -->
+            <div class="col-md-3">
+                <img src="profile.webp" alt="Dr. Shahabur" class="img-fluid rounded-circle">
+            </div>
+            <!-- Welcome Message Column -->
+            <div class="col-md-9 text-left">
+                <h2>Welcome, Dr. Shahabur</h2>
+                <p>Wish you have a nice day !</p>
+            </div>
+        </div>
+        
+        <!-- Panels for last activities -->
+        <!-- ... rest of the dashboard content ... -->
+    
+    
+    
+    
+    
+    <!-- Panels for last activities -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="activity-panel">
+                <div class="icon">👨‍⚕️</div>
+                <h3>Check Up</h3>
+                <p>2560+</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="activity-panel">
+                <div class="icon">✂</div>
+                <h3>Total Surgery</h3>
+                <p>250+</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="activity-panel">
+                <div class="icon">👥</div>
+                <h3>Your Patients</h3>
+                <p>3560+</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="activity-panel">
+                <div class="icon">🏥</div>
+                <h3>Total Admit</h3>
+                <p>20,560+</p>
+            </div>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-6">
+        
+    <!-- Appointment Summary Section on Dashboard -->
+<div class="appointment-summary activity-panel">
+    <h4 style="font-weight: bold;">Upcoming Appointments</h4>
+    <table class="table table-hover">
+        <thead >
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+
+            </tr>
+        </thead>
+        <tbody id="appointmentSummaryList">
+            <!-- Appointment rows will go here -->
+        </tbody>
+    </table>
+    <a href="appointment_page.html" class="btn btn-primary">See More</a>
+</div>
+</div>
+</div>
+
+
+
+    
+    <!-- Further sections would be added here, such as the recent patient list and today's tasks -->
+    
+</div>
+<script>
+     const appointments = [
+            { id: 1, date: '2024-04-01', time: '10:00', status: 'Pending' },
+            { id: 2, date: '2024-04-02', time: '11:00', status: 'Pending' },
+            { id: 3, date: '2024-04-01', time: '10:00', status: 'Pending' },
+            { id: 4, date: '2024-04-01', time: '10:00', status: 'Pending' },
+            { id: 5, date: '2024-04-01', time: '10:00', status: 'Pending' },
+            { id: 6, date: '2024-04-01', time: '10:00', status: 'Pending' }
+        ];
+    // Function to display a summary of appointments in a table on the dashboard
+    function displayAppointmentSummary() {
+        const listElement = document.getElementById('appointmentSummaryList');
+        listElement.innerHTML = ''; // Clear existing content
+
+        // Define how many appointments to show on the dashboard
+        const maxAppointmentsToShow = 3;
+
+        // Get the first few appointments based on maxAppointmentsToShow
+        const appointmentsToShow = appointments.slice(0, maxAppointmentsToShow);
+
+        // Add rows to the table for each appointment
+        appointmentsToShow.forEach(appointment => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <th scope="row">${appointment.id}</th>
+                <td>${appointment.date}</td>
+                <td>${appointment.time}</td>
+                <td class="status">${appointment.status}</td>
+                <td>
+                    <button class="btn btn-success acceptBtn" data-id="${appointment.id}">Accept</button>
+                    <button class="btn btn-danger rejectBtn" data-id="${appointment.id}">Reject</button>
+                </td>
+            `;
+            listElement.appendChild(row);
+            
+        });
+        attachEventListeners();
+    }
+    function updateUI(id, newStatus) {
+        const appointmentElements = document.querySelectorAll('#appointmentSummaryList tr');
+        appointmentElements.forEach(element => {
+            const button = element.querySelector(`button[data-id="${id}"]`);
+            if (button) {
+                const statusElement = element.querySelector('.status');
+                statusElement.textContent = newStatus;
+            }
+        });
+    }
+
+    function acceptAppointment(id) {
+        updateUI(id, 'Accepted');
+    }
+
+    function rejectAppointment(id) {
+        updateUI(id, 'Rejected');
+    }
+
+    function attachEventListeners() {
+        const acceptButtons = document.querySelectorAll('.acceptBtn');
+        const rejectButtons = document.querySelectorAll('.rejectBtn');
+
+        acceptButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                acceptAppointment(id);
+            });
+        });
+
+        rejectButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                rejectAppointment(id);
+            });
+        });
+    }
+
+    // Call the function to populate the appointment summary when the page loads
+    displayAppointmentSummary();
+</script>
+
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
